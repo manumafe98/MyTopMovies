@@ -42,3 +42,13 @@ async def add(request: Request):
 router.post("/add", response_class=HTMLResponse)
 async def add_form(request: Request):
     pass
+
+
+router.get("/get_movie_data")
+def get_movie_data(request: Request):
+    movie_id = int(request.get("id"))
+    pass
+
+# TODO make the post enpoints work and the get_movie_data
+# TODO once the main app is working add register and login
+# TODO maybe convert the add from a button to a navbar item
