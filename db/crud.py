@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
-from db.models.models import Movies, Users
-from db.schemas.schemas import MovieCreate, UserCreate
+from db.models.models import Movies
+from db.schemas.schemas import MovieCreate
 
-def get_all_movies(db: Session, skip: int = 0):
-    return db.query(Movies).offset(skip).order_by(Movies.rating.desc()).all()
+def get_all_movies(db: Session):
+    return db.query(Movies).order_by(Movies.rating.desc()).all()
 
 
 def get_movie_by_id(db: Session, movie_id: int):

@@ -1,4 +1,4 @@
-from client import  Base
+from db.client import  Base
 from sqlalchemy import Boolean, Column, ForeignKey, Integer, String, Text, Float
 from sqlalchemy.orm import relationship
 
