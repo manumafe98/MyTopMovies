@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  pgsql:
+    image: postgres:latest
+    container_name: postgresql-container
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=fastapi_db
+    ports:
+      - "5432:5432"
