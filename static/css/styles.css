@@ -1,6 +1,7 @@
 *, *:before, *:after {
 	 box-sizing: border-box;
 }
+
  html {
 	 font-size: 18px;
 	 line-height: 1.5;
@@ -8,16 +9,18 @@
 	 color: #333;
 	 font-family: "Nunito Sans", sans-serif;
 }
+
  body {
-	 margin: 0;
-	 padding: 0;
-	 height: 100vh;
-	 background-color: #ecf0f9;
-	 background-attachment: fixed;
+	min-height: 100vh;
+	display: flex;
+    flex-direction: column;
+	background-attachment: fixed;
 }
+
 .large {
      font-size: 3rem;
 }
+
  .content {
 	 display: flex;
 	 margin: 0 auto;
@@ -26,6 +29,7 @@
 	 flex-wrap: wrap;
 	 max-width: 1500px;
 }
+
  p.overview {
 	 font-size: 12px;
 	 height: 200px;
@@ -33,6 +37,7 @@
 	 overflow: hidden;
 	 text-overflow: ellipsis;
 }
+
  .heading {
 	 width: 100%;
 	 margin-left: 1rem;
@@ -45,6 +50,7 @@
 	 margin-bottom: 1rem;
 	 position: relative;
 }
+
  .heading:after {
 	 display: block;
 	 content: '';
@@ -54,12 +60,14 @@
 	 background: linear-gradient(135deg, #1a9be6, #1a57e6);
 	 bottom: 0;
 }
+
  .description {
 	 width: 100%;
 	 margin-top: 0;
 	 margin-left: 1rem;
 	 margin-bottom: 3rem;
 }
+
  .card {
 	 color: inherit;
 	 cursor: pointer;
@@ -71,16 +79,19 @@
 	 margin: 1rem auto;
 	 position: relative;
 }
+
  @media screen and (max-width: 800px) {
 	 .card {
 		 width: calc(50% - 3rem);
 	}
 }
+
  @media screen and (max-width: 500px) {
 	 .card {
 		 width: 100%;
 	}
 }
+
  .front, .back {
 	 display: flex;
 	 border-radius: 6px;
@@ -97,6 +108,7 @@
 	 transform-style: preserve-3d;
 	 transition: ease-in-out 600ms;
 }
+
  .front {
 	 background-size: cover;
 	 padding: 2rem;
@@ -106,6 +118,7 @@
 	 overflow: hidden;
 	 font-family: Poppins, sans-serif;
 }
+
  .front:before {
 	 position: absolute;
 	 display: block;
@@ -118,26 +131,33 @@
 	 opacity: 0.25;
 	 z-index: -1;
 }
+
  .card:hover .front {
 	 transform: rotateY(180deg);
 }
+
  .card:nth-child(even):hover .front {
 	 transform: rotateY(-180deg);
 }
+
  .back {
 	 background: #fff;
 	 transform: rotateY(-180deg);
 	 padding: 0 2em;
 }
+
  .card:hover .back {
 	 transform: rotateY(0deg);
 }
+
  .card:nth-child(even) .back {
 	 transform: rotateY(180deg);
 }
+
  .card:nth-child(even):hover .back {
 	 transform: rotateY(0deg);
 }
+
  .button {
 	 transform: translateZ(40px);
 	 cursor: pointer;
@@ -154,6 +174,7 @@
 	 transform-style: preserve-3d;
 	 transition: 300ms ease;
 }
+
  .button:before {
 	 transition: 300ms ease;
 	 position: absolute;
@@ -175,40 +196,110 @@
 	 background-color: rgba(230, 87, 230, 0.25);
 	 background: linear-gradient(135deg, #e61a46, #e61a1a);
 }
+
 .button.delete-button:before {
 	 background-color: rgba(230, 87, 230, 0.25);
 	 box-shadow: 0 0 10px 10px rgba(230, 87, 230, 0.25);
 }
+
  .button:hover {
 	 transform: translateZ(55px);
 }
+
  .button:hover:before {
 	 transform: translateZ(-55px);
 }
+
  .button:active {
 	 transform: translateZ(20px);
 }
+
  .button:active:before {
 	 transform: translateZ(-20px);
 	 top: 12px;
 	 top: 12px;
 }
+
 .container.add {
     margin-top: 40px;
     margin-bottom: 20px;
 }
+
 .rating {
     color: #E4BB23;
 }
+
 .review {
     font-style: italic;
 }
+
  .movie_gens {
 	 font-size: 11.5px;
 }
+
  .title {
 	 font-weight: bold;
 }
+
  .release_date {
 	 font-weight: normal;
+}
+
+#footer {
+    font-family: "Nunito Sans", sans-serif;
+    background-color: #3AA6B9;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+	margin-top: auto;
+}
+
+.footer-icons {
+    margin: 20px 10px;
+    color: white;
+}
+
+.footer-icons:hover {
+    color: orangered;
+}
+
+.footer-text {
+	font-size: 0.9rem;
+	opacity: 0.6;
+}
+
+nav {
+	background-color: #3AA6B9;
+	display: flex;
+	justify-content: space-between;
+	padding: 1rem 2rem;
+}
+
+nav ul {
+	display: flex;
+	align-items: center;
+	gap: 2rem;
+	list-style: none;
+}
+
+nav ul li a {
+	text-decoration: none;
+	font-family: "Nunito Sans", sans-serif;
+	color: white;
+	font-weight: 600;
+	padding: 8px 0;
+	transition: all;
+	transition-duration: 300ms;
+	border-bottom: 1px solid rgba(255, 64, 0, 0);
+}
+
+nav ul li a:hover {
+	color: orangered;
+	border-bottom: 1px solid orangered;
+}
+
+.brand-text {
+	color: white;
+	font-family: "Nunito Sans", sans-serif;
+	font-weight: 600;
 }

@@ -3,10 +3,9 @@ import requests
 from fastapi import Request, Form, APIRouter, status, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
+from db.schemas.schemas import MovieCreate
 from sqlalchemy.orm import Session
 from db.client import SessionLocal, engine, Base
-from db.models.models import Movies
-from db.schemas.schemas import MovieCreate
 from db.crud import get_all_movies, get_movie_by_title, delete_movie_item, get_movie_by_id, create_movie_item
 
 # $env:API_KEY = "38d089808acd67f9a32d59629a4578a8"
