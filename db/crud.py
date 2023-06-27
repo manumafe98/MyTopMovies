@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
-from db.models.models import Movies
-from db.schemas.schemas import MovieCreate
+from db.models.models import Movies, Users
+from db.schemas.schemas import MovieCreate, UserCreate
 
 def get_all_movies(db: Session):
     return db.query(Movies).order_by(Movies.rating.desc()).all()
@@ -26,3 +26,15 @@ def delete_movie_item(db: Session, movie_id: int):
     movie_to_delete = get_movie_by_id(db=db, movie_id=movie_id)
     db.delete(movie_to_delete)
     db.commit()
+
+
+def get_user_by_username(db: Session, username: str):
+    return db.query(Users).filter(Users.username == username).first()
+
+
+def create_user(db: Session, user: UserCreate):
+    db_user = Users(**user.dict())
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user

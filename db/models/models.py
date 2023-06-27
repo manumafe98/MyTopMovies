@@ -17,12 +17,12 @@ class Movies(Base):
     # owner = relationship("User", back_populates="movies")
     
 
-# class Users(Base):
-#     __tablename__ = "users"
-#     id = Column(Integer, primary_key=True, index=True)
-#     email = Column(String, unique=True, nullable=False)
-#     username = Column(String, unique=True, nullable=False)
-#     password = Column(String, nullable=False)
-#     movies = relationship("Movies", back_populates="owner")
+class Users(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, unique=True, nullable=False)
+    username = Column(String, unique=True, nullable=False)
+    password = Column(String, nullable=False)
+    # movies = relationship("Movies", back_populates="owner")
 
 # TODO make the relationship work after testing the model

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 class MovieBase(BaseModel):
     title: str
@@ -20,18 +20,16 @@ class Movie(MovieBase):
         orm_mode = True
 
 
-# class UserBase(BaseModel):
-#     email: str
-#     username: str
+class UserBase(BaseModel):
+    email: EmailStr | None = None
+    username: str
 
-# class UserCreate(UserBase):
-#     password: str
+class UserCreate(UserBase):
+    password: str
 
-# class User(UserBase):
-#     id: int
-#     movies: list[Movie] = []
+class User(UserBase):
+    id: int
+    # movies: list[Movie] = []
 
-#     class Config:
-#         orm_mode = True
-
-# TODO uncomment the usermodel and use it after the movie tests
+    class Config:
+        orm_mode = True

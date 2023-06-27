@@ -1,7 +1,5 @@
 venv/
-flask_version/
 __pycache__/
 db/__pycache__/
 db/models/__pycache__/
 router/__pycache__/
-test.db
