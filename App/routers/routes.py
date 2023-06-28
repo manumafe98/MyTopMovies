@@ -12,8 +12,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login import LoginManager
 from passlib.context import CryptContext
 
-# API_KEY = "38d089808acd67f9a32d59629a4578a8"
-SECRET_KEY = "217e937592f0ea3c1975629980430a541c3c690b6c55fd8beff9a49bec86d16f"
+
+SECRET_KEY = os.environ.get("SECRET_KEY")
 API_KEY = os.environ.get("API_KEY")
 TBD_SEARCH_API = "https://api.themoviedb.org/3/search/movie"
 TBD_GET_API = "https://api.themoviedb.org/3/movie/"
