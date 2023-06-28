@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8000
 
 # Start the FastApi app with a sleep command so we give time to postgres to be fully up
-CMD sleep 20 && python api_setup.py && uvicorn main:app --host=0.0.0.0 --port=8000
+CMD sleep 20 && uvicorn main:app --host=0.0.0.0 --port=8000
