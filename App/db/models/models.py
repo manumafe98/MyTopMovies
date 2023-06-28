@@ -13,8 +13,8 @@ class Movies(Base):
     ranking = Column(Integer, nullable=False)
     review = Column(String, unique=True, nullable=False)
     img_url = Column(String, unique=True, nullable=False)
-    # owner_id = Column(Integer, ForeignKey("users.id"))
-    # owner = relationship("User", back_populates="movies")
+    owner_id = Column(Integer, ForeignKey("users.id"))
+    owner = relationship("Users", back_populates="movies")
     
 
 class Users(Base):
@@ -23,6 +23,4 @@ class Users(Base):
     email = Column(String, unique=True, nullable=False)
     username = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
-    # movies = relationship("Movies", back_populates="owner")
-
-# TODO make the relationship work after testing the model
+    movies = relationship("Movies", back_populates="owner")

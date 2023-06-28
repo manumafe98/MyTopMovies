@@ -3,5 +3,6 @@ fastapi_login==1.9.0
 passlib==1.7.4
 pydantic==1.10.9
 Requests==2.31.0
-SQLAlchemy==2.0.13
 SQLAlchemy==2.0.17
+python-multipart==0.0.6
+Jinja2==3.1.2

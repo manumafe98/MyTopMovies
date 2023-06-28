@@ -49,10 +49,10 @@ def load_user(username: str, db: Session = next(get_db())):
 
 @router.get("/", response_class=HTMLResponse)
 async def home(request: Request, user = Depends(manager), db: Session = Depends(get_db)):
-    all_movies = get_all_movies(db=db)
+    all_movies = get_all_movies(db=db, user_id=user.id)
     for movie in all_movies:
         ranking = all_movies.index(movie) + 1
-        movie_to_edit = get_movie_by_title(db=db, movie_title=movie.title)
+        movie_to_edit = get_movie_by_title(db=db, movie_title=movie.title, user_id=user.id)
         movie_to_edit.ranking = ranking
         db.commit()
     return templates.TemplateResponse("index.html", {"request": request, "movies": all_movies})
@@ -65,8 +65,8 @@ async def edit(movie_id: int, request: Request, user = Depends(manager)):
 
 @router.post("/edit/{movie_id}", response_class=HTMLResponse)
 async def edit_form(movie_id: int, request: Request, db: Session = Depends(get_db),
-                    rating: float = Form(...), review: str = Form(...)):
-    movie_to_update = get_movie_by_id(db=db, movie_id=movie_id)
+                    rating: float = Form(...), review: str = Form(...), user = Depends(manager)):
+    movie_to_update = get_movie_by_id(db=db, movie_id=movie_id, user_id=user.id)
     movie_to_update.rating = rating
     movie_to_update.review = review
     db.commit()
@@ -79,7 +79,7 @@ async def add(request: Request, user = Depends(manager)):
     
 
 @router.post("/add", response_class=HTMLResponse)
-async def add_form(request: Request, movie_title: str = Form(...)):
+async def add_form(request: Request, movie_title: str = Form(...), user = Depends(manager)):
     response = requests.get(TBD_SEARCH_API, params={"api_key": API_KEY, "query": movie_title})
     output = response.json()
     data = output["results"]
@@ -88,7 +88,7 @@ async def add_form(request: Request, movie_title: str = Form(...)):
 
 @router.get("/delete/{movie_id}", response_class=HTMLResponse)
 async def delete(movie_id: int, db: Session = Depends(get_db), user = Depends(manager)):
-    delete_movie_item(db=db, movie_id=movie_id)
+    delete_movie_item(db=db, movie_id=movie_id, user_id=user.id)
     return RedirectResponse(router.url_path_for("home"), status_code=status.HTTP_303_SEE_OTHER)
 
 
@@ -104,8 +104,8 @@ def get_movie_data(movie_id: int, request: Request, db: Session = Depends(get_db
                              rating=1.0,
                              ranking=1,
                              review=" ")
-    create_movie_item(db=db, movie=new_record)
-    get_movie = get_movie_by_title(db=db, movie_title=output["original_title"])
+    create_movie_item(db=db, movie=new_record, user_id=user.id)
+    get_movie = get_movie_by_title(db=db, movie_title=output["original_title"], user_id=user.id)
     get_id = get_movie.id
     return RedirectResponse(router.url_path_for("edit_form", movie_id=get_id), 
                             status_code=status.HTTP_303_SEE_OTHER)
@@ -150,6 +150,13 @@ def login_form(request: Request, db: Session = Depends(get_db), data: OAuth2Pass
             return templates.TemplateResponse("login.html", {"request": request, "bad_password": True})
     
     return templates.TemplateResponse("register.html", {"request": request, "exists": False})
+
+
+@router.get("/logout")
+def logout(user = Depends(manager)):
+  response = RedirectResponse(router.url_path_for("login"), status_code= status.HTTP_303_SEE_OTHER)
+  response.delete_cookie(key="access-token")
+  return response
 
 # TODO make the database relational now that the login works
 # TODO add some error messages to the login/register forms

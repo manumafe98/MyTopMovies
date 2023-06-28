@@ -14,7 +14,7 @@ class MovieCreate(MovieBase):
 
 class Movie(MovieBase):
     id: int
-    # owner_id: int
+    owner_id: int
 
     class Config:
         orm_mode = True
@@ -29,7 +29,7 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    # movies: list[Movie] = []
+    movies: list[Movie] = []
 
     class Config:
         orm_mode = True
