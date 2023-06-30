@@ -331,4 +331,5 @@ def logout(user = Depends(manager)):
 
 
 # TODO add some error messages to the login/register forms
+# TODO add forgot password endpoint
 # TODO improve the whole app visually

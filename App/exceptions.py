@@ -2,6 +2,9 @@ from fastapi import Request
 from fastapi.responses import RedirectResponse
 
 class NotAuthenticatedException(Exception):
+    """
+    Exception to trigger when the user is not authenticated.
+    """
     pass
 
 def auth_exception_handler(request: Request, exc: NotAuthenticatedException):
@@ -12,4 +15,7 @@ def auth_exception_handler(request: Request, exc: NotAuthenticatedException):
 
 
 def include_app(app):
-	app.add_exception_handler(NotAuthenticatedException, auth_exception_handler)
+    """
+    Creates the exception handler to redirect the user to the login when not authenticated.
+    """
+    app.add_exception_handler(NotAuthenticatedException, auth_exception_handler)
