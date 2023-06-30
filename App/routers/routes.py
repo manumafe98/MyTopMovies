@@ -11,6 +11,7 @@ from db.crud import create_user, get_user_by_username
 from fastapi.security import OAuth2PasswordRequestForm
 from fastapi_login import LoginManager
 from passlib.context import CryptContext
+from exceptions import NotAuthenticatedException
 
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -19,11 +20,12 @@ TBD_SEARCH_API = "https://api.themoviedb.org/3/search/movie"
 TBD_GET_API = "https://api.themoviedb.org/3/movie/"
 IMAGE_PATH = "https://image.tmdb.org/t/p/w500"
 
+
 router = APIRouter()
 templates = Jinja2Templates(directory="templates")
 Base.metadata.create_all(bind=engine)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-manager = LoginManager(SECRET_KEY, "/user/signin", use_cookie=True)
+manager = LoginManager(SECRET_KEY, "/user/signin", use_cookie=True, custom_exception=NotAuthenticatedException)
 
 
 def get_db():
@@ -329,5 +331,4 @@ def logout(user = Depends(manager)):
 
 
 # TODO add some error messages to the login/register forms
-# TODO add content for the readme
 # TODO improve the whole app visually
