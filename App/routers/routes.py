@@ -104,7 +104,7 @@ async def home(request: Request, user = Depends(manager), db: Session = Depends(
         movie_to_edit = get_movie_by_title(db=db, movie_title=movie.title, user_id=user.id)
         movie_to_edit.ranking = ranking
         db.commit()
-    return templates.TemplateResponse("index.html", {"request": request, "movies": all_movies})
+    return templates.TemplateResponse("index.html", {"request": request, "movies": all_movies, "logged": True})
 
 
 @router.get("/edit/{movie_id}", response_class=HTMLResponse)
@@ -159,7 +159,7 @@ async def add(request: Request, user = Depends(manager)):
     Returns:
         TemplateResponse: The response containing the rendered "add.html" template.
     """
-    return templates.TemplateResponse("add.html", {"request": request})
+    return templates.TemplateResponse("add.html", {"request": request, "logged": True})
     
 
 @router.post("/add", response_class=HTMLResponse)
@@ -178,7 +178,7 @@ async def add_form(request: Request, movie_title: str = Form(...), user = Depend
     response = requests.get(TBD_SEARCH_API, params={"api_key": API_KEY, "query": movie_title})
     output = response.json()
     data = output["results"]
-    return templates.TemplateResponse("select.html", {"request": request, "matched_movies": data})
+    return templates.TemplateResponse("select.html", {"request": request, "matched_movies": data, "logged": True})
 
 
 @router.get("/delete/{movie_id}", response_class=HTMLResponse)
@@ -240,7 +240,7 @@ def register(request: Request):
     Returns:
         TemplateResponse: The response containing the rendered "register.html" template.
     """
-    return templates.TemplateResponse("register.html", {"request": request})
+    return templates.TemplateResponse("register.html", {"request": request, "exists": True})
 
 
 @router.post("/user/signup", response_class=HTMLResponse)
@@ -257,11 +257,12 @@ def register_form(request: Request, db: Session = Depends(get_db),
         password (str): The password submitted in the form
 
     Returns:
-        RedirectResponse: A redirect response to the login page.
+        TemplateResponse: To the login if the user already exists
+        RedirectResponse: A redirect response to the login page
     """
     db_user = get_user_by_username(db=db, username=username)
     if db_user:
-        return templates.TemplateResponse("register.html", {"request": request, "exists": True})
+        return templates.TemplateResponse("login.html", {"request": request, "exists": True})
 
     new_user = UserCreate(username=username, email=email, password=get_password_hash(password))
     success = create_user(db=db, user=new_user)
@@ -330,6 +331,6 @@ def logout(user = Depends(manager)):
     return response
 
 
-# TODO add some error messages to the login/register forms
+# TODO add password requirements
 # TODO add forgot password endpoint
 # TODO improve the whole app visually

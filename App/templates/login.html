@@ -6,6 +6,11 @@
       <!-- Content -->
       <div class="container mt-5">
         <h2>Login Form</h2>
+        {% if exists %}
+        <p style="color: red;">The user already exists you should sign in instead!</p>
+        {% elif bad_password %}
+        <p style="color: red;">Incorrect password, try again!</p>
+        {% endif %}
         <form class="form" method="POST" role="form">
             <div class="form-group">
                 <label class="form-label" for="username">Username</label>

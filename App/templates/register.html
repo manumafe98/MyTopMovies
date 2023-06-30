@@ -6,6 +6,9 @@
       <!-- Content -->
       <div class="container mt-5">
         <h2>Registration Form</h2>
+        {%  if not exists %}
+        <p style="color: red;">The user doesn't exist you should register first!</p>
+        {% endif %}
         <form class="form" method="POST" role="form">
             <div class="form-group">
                 <label class="form-label" for="username">Username</label>

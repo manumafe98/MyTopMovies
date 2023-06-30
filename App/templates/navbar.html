@@ -4,7 +4,13 @@
         <a><span class="brand-text">My Top Movies</span></a>
     </div>
     <ul>
+        {% if not logged %}
+        <li ><a href="{{ url_for('register') }}">SignUp</a></li>
+        <li ><a href="{{ url_for('login') }}">SignIn</a></li>
+        {% else %}
         <li><a href="{{ url_for('home') }}">Home</a></li>
         <li ><a href="{{ url_for('add') }}">Add</a></li>
+        <li ><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% endif %}
     </ul>
 </nav>
