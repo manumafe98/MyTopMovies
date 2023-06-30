@@ -24,6 +24,8 @@ Welcome to My Top Movies! This Python application allows you to create an accoun
 - `GET /user/signin` : Renders the signin page for users to sign in to their accounts.
 - `POST /user/signin` : Handles the form submission in the signin page.
 - `GET /logout` : Logs out the current user and redirects to the login page.
+- `GET /forgot_password` : Renders the forgot password page for users to change their password.
+- `POST /forgot_password` : Handles the form submission in the forgot password page.
 
 ## Setup and Installation
 

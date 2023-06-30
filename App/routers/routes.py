@@ -199,7 +199,7 @@ async def delete(movie_id: int, db: Session = Depends(get_db), user = Depends(ma
 
 
 @router.get("/get_movie_data/{movie_id}", response_class=HTMLResponse)
-def get_movie_data(movie_id: int, request: Request, db: Session = Depends(get_db), user = Depends(manager)):
+async def get_movie_data(movie_id: int, request: Request, db: Session = Depends(get_db), user = Depends(manager)):
     """
     Gets all the information of the movie and adds it to the database.
 
@@ -230,7 +230,7 @@ def get_movie_data(movie_id: int, request: Request, db: Session = Depends(get_db
 
 
 @router.get("/user/signup", response_class=HTMLResponse)
-def register(request: Request):
+async def register(request: Request):
     """
     Renders the signup page.
 
@@ -244,8 +244,8 @@ def register(request: Request):
 
 
 @router.post("/user/signup", response_class=HTMLResponse)
-def register_form(request: Request, db: Session = Depends(get_db),  
-                  username: str = Form(...), email: str = Form(...), password: str = Form(...)):
+async def register_form(request: Request, db: Session = Depends(get_db),  
+                        username: str = Form(...), email: str = Form(...), password: str = Form(...)):
     """
     Handles the form submission in the signup page.
 
@@ -272,7 +272,7 @@ def register_form(request: Request, db: Session = Depends(get_db),
 
 
 @router.get("/user/signin", response_class=HTMLResponse)
-def login(request: Request):
+async def login(request: Request):
     """
     Renders the signin page.
 
@@ -286,14 +286,14 @@ def login(request: Request):
 
 
 @router.post("/user/signin", response_class=HTMLResponse)
-def login_form(request: Request, db: Session = Depends(get_db), data: OAuth2PasswordRequestForm = Depends()):
+async def login_form(request: Request, db: Session = Depends(get_db), data: OAuth2PasswordRequestForm = Depends()):
     """
     Handles the form submission in the signin page.
 
     Args:
-        request (Request): _description_
-        db (Session, optional): _description_. Defaults to Depends(get_db).
-        data (OAuth2PasswordRequestForm, optional): _description_. Defaults to Depends().
+        request (Request):  The incoming HTTP request object
+        db (Session): The database session
+        data (OAuth2PasswordRequestForm): The Oauth2 authentication form
 
     Returns:
         RedirectResponse: If the login is succesfull redirects the user to the home page.
@@ -316,7 +316,7 @@ def login_form(request: Request, db: Session = Depends(get_db), data: OAuth2Pass
 
 
 @router.get("/logout")
-def logout(user = Depends(manager)):
+async def logout(user = Depends(manager)):
     """
     Logs out the current user.
 
@@ -331,6 +331,54 @@ def logout(user = Depends(manager)):
     return response
 
 
+@router.get("/forgot_password", response_class=HTMLResponse)
+async def forgot_password(request: Request):
+    """
+    Renders the forgot password page.
+
+    Args:
+        request (Request): The incoming HTTP request object
+
+    Returns:
+        TemplateResponse: The response containing the rendered "forgot_password.html" template.
+    """
+    return templates.TemplateResponse("forgot_password.html", {"request": request, "old_password": True})
+
+
+@router.post("/forgot_password", response_class=HTMLResponse)
+async def forgot_password_form(request: Request, db: Session = Depends(get_db),
+                               username: str = Form(...), old_password: str = Form(...),
+                               new_password: str = Form(...), confirm_password: str = Form(...)):
+    """
+    Handles the form submission in the forgot password page.
+
+    Args:
+        request (Request): The incoming HTTP request object
+        db (Session): The database session
+        username (str): The username submitted in the form
+        old_password (str):The old_password submitted in the form
+        new_password (str): The new_password submitted in the form
+        confirm_password (str): The confirm_password submitted in the form
+
+    Returns:
+        RedirectResponse: Redirects to the login page if the password change was succesfull
+        TemplateResponse: If the old password doesn't match the one in the db renders the forgot_password with an error
+        TemplateResponse: If the new password doesn't match the confirmation renders the forgot_password with an error
+    """
+    user = get_user_by_username(db=db, username=username)
+    if verify_password(old_password, user.password):
+        if new_password == confirm_password:
+            new_pass = get_password_hash(new_password)
+            user.password = new_pass
+            db.commit()
+            return RedirectResponse(router.url_path_for("login"), status_code=status.HTTP_303_SEE_OTHER)
+        else:
+            return templates.TemplateResponse("forgot_password.html", {"request": request,
+                                                                       "old_password": True, 
+                                                                       "passwords_not_match": True})
+
+    return templates.TemplateResponse("forgot_password.html", {"request": request, "old_password": False})
+
+
 # TODO add password requirements
-# TODO add forgot password endpoint
 # TODO improve the whole app visually
